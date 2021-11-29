@@ -14,8 +14,9 @@ import { insertData } from "./redux/Action";
 function Fram() {
   const useStyles = makeStyles({
     root: {
-      maxWidth: 500,
+      maxWidth: 1000,
       height: 150,
+      width: "100%"
     },
     media: {
       height: "200px",
@@ -83,7 +84,9 @@ function Fram() {
             >
               Add Task
             </Button>
+          
           </div>
+          
         </Card>
         <Mylist></Mylist>
       </Container>

@@ -1,3 +1,4 @@
+
 import logo from "./logo.svg";
 import "./App.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -23,127 +24,64 @@ import {
   completeTask,
   editTask,
 } from "./redux/Action";
+
 import { makeStyles } from "@material-ui/core/styles";
-import Completelist from "./Completelist";
-import Uncompletetask from "./Uncompletetask";
-function App() {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      maxWidth: 1100,
-    },
-    media: {
-      height: 300,
-    },
-    rot: {
-      width: "100%",
-      maxWidth: 1000,
-    },
-    margin: {
-      margin: theme.spacing(-2),
-    },
-  }));
+function Uncompletetask(props){
+    let [arrow, setArrow] = useState(false);
+    let [detail, setDetail] = useState(false);
+    let [snoFlag, setSnoFlag] = useState();
+    let [removeDetail, setRemoveDetail] = useState();
+    let [getDetail,setGetDetail]=useState(true);
+    let [completeList,setCompeleteList]=useState(false);
+    let arr = [];
+    arr = useSelector((state) => state.instData);
+    let dispatch = useDispatch();
+    let a = (no) => {
+      setSnoFlag(no);
+    };
+  
+    const useStyles = makeStyles((theme) => ({
+        root: {
+          maxWidth: 1100,
+        },
+        media: {
+          height: 300,
+        },
+        rot: {
+          width: "100%",
+          maxWidth: 1000,
+        },
+        margin: {
+          margin: theme.spacing(-2),
+        },
+      }));
+    
+      const classes = useStyles();
 
-  const flagStyle = {
-    width: "0",
-    height: "0",
-    borderTop: " 25px solid transparent",
-    borderLeft: "57px solid green",
-    borderBottom: "36px solid transparent",
-  };
-
-  const classes = useStyles();
-
-  let [arrow, setArrow] = useState(false);
-  let [detail, setDetail] = useState(false);
-  let [snoFlag, setSnoFlag] = useState();
-  let [removeDetail, setRemoveDetail] = useState();
-  let [getDetail, setGetDetail] = useState(true);
-  let [completeList, setCompeleteList] = useState(false);
-  let [Uncomplete, setUncompleteTask] = useState(false);
-  let arr = [];
-  arr = useSelector((state) => state.instData);
-  let dispatch = useDispatch();
-  let a = (no) => {
-    setSnoFlag(no);
-  };
-  return (
-    <div className="App" className="cardDiv">
-      {arrow ? (
-        ""
-      ) : (
-        <div className="btnDiv">
-          <Button
-            variant="contained"
-            onClick={() => {
-              setCompeleteList(true);
-              setUncompleteTask(false);
-            }}
-          >
-            complete Task
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setUncompleteTask(true);
-              setCompeleteList(false);
-            }}
-          >
-            Uncomplete Task
-          </Button>
-        </div>
-      )}
-
-      <div>
-        {arrow ? (
-          <p
-            className="arrowRight"
-            onClick={() => {
-              setArrow(false);
-            }}
-          >
-            {" "}
-            <i class="arrow down"></i>
-          </p>
-        ) : (
-          <p
-            onClick={() => {
-              setArrow(true);
-              dispatch(showData());
-              setCompeleteList(false);
-              setUncompleteTask(false);
-            }}
-            className="arrowRight"
-          >
-            {" "}
-            <i class="arrow right"></i> <span>See your All Task</span>
-          </p>
-        )}
-      </div>
-
-      {arrow ? (
-        <>
-          {arr.map((e) => {
+return(
+    <>
+    {props.arr.map((e) => {
             console.log("hiii");
             return (
-              <>
-                <Card
-                  className={detail ? "cardWithoutDetail" : ""}
+              <> 
+               {e.check==null?
+                <Card  className={detail?"cardWithoutDetail":""}
                   className={`${classes.roo} ${
                     e.sno == snoFlag ? "" : "card"
                   } ${e.sno == removeDetail ? "card" : ""}`}
                 >
                   <List className={classes.rot}>
                     <ListItem role={undefined} dense button>
-                      <div
-                        style={{
-                          width: "0",
-                          height: "0",
-                          borderTop: " 25px solid transparent",
-                          borderLeft: `36px solid ${e.color}`,
-                          borderBottom: "25px solid transparent",
-                          paddingLeft: "8px",
-                        }}
-                      ></div>
+                    <div
+                    style={{
+                      width: "0",
+                      height: "0",
+                      borderTop: " 25px solid transparent",
+                      borderLeft: `36px solid ${e.color}`,
+                      borderBottom: "25px solid transparent",
+                      paddingLeft:"8px"
+                    }}
+                  ></div>
                       <ListItemIcon>
                         <Checkbox
                           edge="start"
@@ -180,7 +118,7 @@ function App() {
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
-                    {snoFlag == e.sno && getDetail ? (
+                    {snoFlag == e.sno && getDetail? (
                       ""
                     ) : (
                       <Button
@@ -192,7 +130,8 @@ function App() {
                           if (detail && snoFlag == e.sno) setDetail(false);
                           if (snoFlag == e.sno) setDetail(true);
 
-                          setGetDetail(true);
+                          setGetDetail(true)
+
                         }}
                       >
                         Details
@@ -202,30 +141,24 @@ function App() {
                   <div className="bottomDiv">
                     <p>{e.time}</p>
                     <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => {
-                        setRemoveDetail(e.sno);
-                        setGetDetail(false);
-                      }}
-                    >
-                      X
-                    </Button>
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                      setRemoveDetail(e.sno);
+                      setGetDetail(false)
+                    }}
+                  >
+                    X
+                  </Button>
+                  
                   </div>
+                 
                 </Card>
-              </>
+:""}              </>
+              
             );
           })}
-        </>
-      ) : completeList ? (
-        <Completelist arr={arr}></Completelist>
-      ) : Uncomplete ? (
-        <Uncompletetask arr={arr}></Uncompletetask>
-      ) : (
-        ""
-      )}
-    </div>
-  );
+    </>
+)
 }
-
-export default App;
+export default Uncompletetask;

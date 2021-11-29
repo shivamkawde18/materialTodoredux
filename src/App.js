@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 function App() {
   let rootReducer = combineReducers({ instData: instData});
-
+ //react persist
   const persistConfig = {
     key: "root",
     storage,
@@ -16,14 +16,12 @@ function App() {
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  //  const l=persistStore(persistedReducer)
   let store = createStore(persistedReducer);
   let persistor = persistStore(store);
   return (
     <>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          {/* <Mylist></Mylist> */}
           <Fram></Fram>
         </PersistGate>
       </Provider>
